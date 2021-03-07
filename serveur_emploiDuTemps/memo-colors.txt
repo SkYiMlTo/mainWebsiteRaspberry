@@ -1,0 +1,5 @@
+Maths = Rouge
+Physique = Jaune
+Info = Bleu
+Langues/Eco = Vert
+Promo = oui
