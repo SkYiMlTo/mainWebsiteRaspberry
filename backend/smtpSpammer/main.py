@@ -41,12 +41,12 @@ def spam(subj, contenu, dest, nb):
 
     error = False
     flipFlop = False
-    for a in range(1, nb + 1):
-        if not flipFlop:
-            error = sendMail(EMAIL_ADDRESS, EMAIL_PASSWORD, msg1)
-#            print("Sent" + str(a) + " mail with email 1")
-        else:
-            error = sendMail(EMAIL_ADDRESS2, EMAIL_PASSWORD, msg2)
+    for _ in range(1, nb + 1):
+        error = (
+            sendMail(EMAIL_ADDRESS2, EMAIL_PASSWORD, msg2)
+            if flipFlop
+            else sendMail(EMAIL_ADDRESS, EMAIL_PASSWORD, msg1)
+        )
 #            print("Sent" + str(a) + " mail with email 2")
 
         if error:
@@ -58,10 +58,9 @@ def main():
     path = '/var/www/html/mainRaspberry/jsonFiles/smtpSpammer'
     bashCommand = "sudo rm /var/www/html/mainRaspberry/jsonFiles/smtpSpammer/"
     while 1:
-        files = os.listdir(path)
-        if files:
+        if files := os.listdir(path):
             for file in files:
-                with open(path + '/' + file) as json_data:
+                with open(f'{path}/{file}') as json_data:
                     data_dict = json.load(json_data)
                     spam(data_dict["subject"], data_dict['message'], data_dict['mail'], int(data_dict['amount']))
                     delFile = bashCommand + file
